@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "ShuttleUI.Gallery (Package)": {
+        "commandName": "MsixPackage"
+      },
+      "ShuttleUI.Gallery (Unpackaged)": {
+        "commandName": "Project"
+      }
+    }
+}
