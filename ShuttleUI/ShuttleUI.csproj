@@ -11,9 +11,23 @@
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	<Title>Shuttle UI</Title>
   </PropertyGroup>
+  <ItemGroup>
+	<Page Remove="Controls\SettingsCard\SettingsCard.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
 	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240404000" />
+	  <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
 	  <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+	  <PackageReference Include="MimeMapping" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<None Update="Controls\MediaBackgroundPanel\MediaBackgroundPanel.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</None>
+	<None Update="Controls\SettingsCard\SettingsCard.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</None>
   </ItemGroup>
 </Project>
