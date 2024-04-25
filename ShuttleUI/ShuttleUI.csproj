@@ -14,6 +14,8 @@
 
   <ItemGroup>
 	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240404000" />
+	  <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
 	  <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+	  <PackageReference Include="MimeMapping" Version="3.0.1" />
   </ItemGroup>
 </Project>
