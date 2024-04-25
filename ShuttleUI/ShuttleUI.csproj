@@ -11,6 +11,7 @@
 	<Title>Shuttle UI</Title>
 	<Authors>Naveen Dharmathunga</Authors>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 	<RepositoryUrl>https://github.com/D-Naveenz/ShuttleUI</RepositoryUrl>
 	<Description>Shuttle UI is a library designed to accelerate the development process of WinUI 3 applications. It offers advanced UI controls and addresses limitations present in some XAML elements provided by WinUI. Additionally, it includes enhancements for the WinUI template provided by TemplateStudio.</Description>
 	<Version>0.3.7</Version>
