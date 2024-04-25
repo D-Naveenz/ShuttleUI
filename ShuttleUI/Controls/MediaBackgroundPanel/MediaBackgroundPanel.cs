@@ -46,7 +46,24 @@ public partial class MediaBackgroundPanel : ContentControl
         if (sourceObj is string sourceStr)
         {
             // Load storage file from the string
-            source = new Uri(sourceStr);
+            try
+            {
+                source = new Uri(sourceStr);
+            }
+            catch (UriFormatException)
+            {
+                var localFolderPath = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
+                var path = Path.GetFullPath(Path.Combine(localFolderPath, sourceStr));
+
+                try
+                {
+                    source = new Uri(path);
+                }
+                catch (UriFormatException)
+                {
+                    throw new UriFormatException("The source string is not a valid uri or a valid path.");
+                }
+            }
         }
         else if (sourceObj is Uri sourceUri)
         {

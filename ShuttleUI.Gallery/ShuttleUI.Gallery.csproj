@@ -35,6 +35,7 @@
 	<ProjectReference Include="..\ShuttleUI.Gallery.Core\ShuttleUI.Gallery.Core.csproj" />
 	<ProjectReference Include="..\ShuttleUI\ShuttleUI.csproj" />
   </ItemGroup>
+	
   <ItemGroup>
 	<None Update="appsettings.json">
 	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -4,9 +4,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:behaviors="using:ShuttleUI.Gallery.Behaviors"
+    xmlns:suic="using:ShuttleUI.Controls"
+    xmlns:suib="using:ShuttleUI.Behaviors"
+    behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
-        
+        <suic:MediaBackgroundPanel x:Name="MediaBackgroundPanel" 
+                                   Source="ms-appx:///Assets/images/background.jpeg" 
+                                   CornerRadius="5,0,0,0"
+                                   suib:LayoutBehavior.ThicknessType="Padding">
+            <StackPanel>
+                <TextBlock>This is a title</TextBlock>
+            </StackPanel>
+        </suic:MediaBackgroundPanel>
     </Grid>
 </Page>
