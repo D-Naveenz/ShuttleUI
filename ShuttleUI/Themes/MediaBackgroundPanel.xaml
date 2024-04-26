@@ -3,10 +3,27 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:ShuttleUI.Controls">
 
-    <x:Double x:Key="MediaBackgroundPanelMinHeight">280</x:Double>
-    <x:Double x:Key="MediaBackgroundPanelMinWidth">120</x:Double>
-    <Thickness x:Key="MediaBackgroundPanelPadding">0</Thickness>
-    <CornerRadius x:Key="MediaBackgroundPanelCornerRadius">5</CornerRadius>
+    <DataTemplate x:Key="MBPDefaultImagePresenter">
+        <Image x:Name="PART_ImagePresenter"
+               HorizontalAlignment="Stretch"
+               VerticalAlignment="Stretch"
+               IsTabStop="False"
+               Source="{Binding}"
+               Stretch="UniformToFill"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="MBPDefaultVideoPresenter">
+        <MediaPlayerElement x:Name="PART_VideoPresenter"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            IsTabStop="False"
+                            Source="{Binding}"
+                            AutoPlay="True"
+                            Stretch="UniformToFill"/>
+    </DataTemplate>
+
+    <x:Double x:Key="MediaBackgroundPanelMinWidth">280</x:Double>
+    <x:Double x:Key="MediaBackgroundPanelMinHeight">120</x:Double>
 
     <Style TargetType="controls:MediaBackgroundPanel" BasedOn="{StaticResource DefaultMediaBackgroundPanelStyle}" />
 
@@ -19,35 +36,23 @@
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Stretch" />
-            <Setter Property="Padding" Value="{ThemeResource MediaBackgroundPanelPadding}" />
-            <Setter Property="CornerRadius" Value="{ThemeResource MediaBackgroundPanelCornerRadius}" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}" />
+            <Setter Property="ImageTemplate" Value="{ThemeResource MBPDefaultImagePresenter}" />
+            <Setter Property="MediaPlayerTemplate" Value="{ThemeResource MBPDefaultVideoPresenter}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="controls:MediaBackgroundPanel">
                         <Grid x:Name="PART_RootGrid" 
-                              Background="{TemplateBinding Background}">
-
+                              Background="{TemplateBinding Background}" 
+                              CornerRadius="{TemplateBinding CornerRadius}">
+                            
                             <!-- Background -->
                             <ContentPresenter x:Name="PART_BackgroundHolder" 
                                               Canvas.ZIndex="0" 
                                               CornerRadius="{TemplateBinding CornerRadius}"
-                                              Content="{TemplateBinding BackgroundContent}">
-                                <!--Content="{TemplateBinding BackgroundContent}"-->
-                                <ContentPresenter.Resources>
-                                    <Style TargetType="Image">
-                                        <Setter Property="Stretch" Value="UniformToFill" />
-                                        <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                        <Setter Property="VerticalAlignment" Value="Stretch" />
-                                        <Setter Property="IsTabStop" Value="False" />
-                                    </Style>
-                                    <Style TargetType="MediaPlayerElement">
-                                        <Setter Property="Stretch" Value="UniformToFill" />
-                                        <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                        <Setter Property="VerticalAlignment" Value="Stretch" />
-                                        <Setter Property="IsTabStop" Value="False" />
-                                    </Style>
-                                </ContentPresenter.Resources>
-                            </ContentPresenter>
+                                              Content="{TemplateBinding BackgroundContent}"
+                                              ContentTemplateSelector="{TemplateBinding BackgroundSelector}"/>
 
                             <!-- Content -->
                             <ContentPresenter x:Name="PART_ContentPresenter" 
