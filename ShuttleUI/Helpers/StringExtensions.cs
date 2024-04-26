@@ -16,4 +16,21 @@ public static class StringExtensions
         result = default;
         return false;
     }
+
+    public static string GetPathChunk(this string pathStr)
+    {
+        // If pathStr is a complete path, do not want to get the chunk
+        if (Path.Exists(pathStr))
+        {
+            return pathStr;
+        }
+
+        // Remove the leading / or \\
+        if (pathStr.StartsWith('/') || pathStr.StartsWith('\\'))
+        {
+            pathStr = pathStr[1..];
+        }
+
+        return pathStr.Replace('/', '\\');
+    }
 }

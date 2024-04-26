@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Windows.Storage;
 
 namespace ShuttleUI.Controls;
 
@@ -54,7 +55,7 @@ public partial class MediaBackgroundPanel : ContentControl
             "Source", 
             typeof(object), 
             typeof(MediaBackgroundPanel), 
-            new PropertyMetadata(null, (d, e) => ((MediaBackgroundPanel)d).OnSourcePropertyChanged(e.OldValue, e.NewValue)));
+            new PropertyMetadata(null, OnSourcePropertyChangedAsync));
 
     /// <summary>
     /// Gets or sets the <see cref="MediaBackgroundType"/> of the selected background source.
@@ -85,19 +86,20 @@ public partial class MediaBackgroundPanel : ContentControl
         DependencyProperty.Register("BackgroundContent", typeof(FrameworkElement), typeof(MediaBackgroundPanel), new PropertyMetadata(null));
 
     /// <summary>
-    /// Gets the <see cref="Uri"/> of the source, if the source is recognized as the current background.
+    /// Gets the <see cref="StorageFile"/> of the source, if the source is recognized as the current background.
     /// </summary>
-    public Uri? SourceUri
+    public StorageFile? SourceFile
     {
         get;
         private set;
     }
 
-
-    public virtual void OnSourcePropertyChanged(object? oldValue, object? newValue)
+    private static async void OnSourcePropertyChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        var source = Source;
-        SourceChangedAsync(source);
+        if (d is MediaBackgroundPanel backgroundPanel)
+        {
+            await backgroundPanel.SourceChangedAsync(e.NewValue);
+        }
     }
 
     public virtual void OnImageTemplatePropertyChanged(DataTemplate? oldValue, DataTemplate? newValue)

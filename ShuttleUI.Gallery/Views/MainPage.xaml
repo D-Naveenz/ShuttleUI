@@ -12,7 +12,7 @@
 
     <Grid x:Name="ContentArea">
         <suic:MediaBackgroundPanel x:Name="MediaBackgroundPanel" 
-                                   Source="ms-appx:///Assets/images/background.jpeg" 
+                                   Source="/Assets/images/background.jpeg" 
                                    CornerRadius="5,0,0,0"
                                    suib:LayoutBehavior.ThicknessType="Padding">
             <StackPanel>

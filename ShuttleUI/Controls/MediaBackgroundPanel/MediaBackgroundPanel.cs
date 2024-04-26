@@ -1,10 +1,11 @@
+using System.Reflection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Automation.Peers;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
-using MimeMapping;
 using ShuttleUI.Helpers;
 using Windows.Media.Core;
+using Windows.Storage;
 
 namespace ShuttleUI.Controls;
 
@@ -34,15 +35,34 @@ public partial class MediaBackgroundPanel : ContentControl
         DefaultStyleKey = typeof(MediaBackgroundPanel);
     }
 
+    public async Task SourceChangedAsync(object? source)
+    {
+        if (source != null)
+        {
+            var file = await GetFileFromSourceAsync(source);
+            var contentType = file.ContentType.Split('/')[0];
+
+            MediaBackgroundType fileType;
+            if (file != null && contentType != null && contentType.TryToEnum(out fileType))
+            {
+                // Change the background data
+                BackgroundType = fileType;
+                SourceFile = file;
+            }
+
+            ChangeBackgroundContent();
+        }
+    }
+
     /// <inheritdoc/>>
     protected override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
     }
 
-    private static Uri? GetFileFromSource(object sourceObj)
+    private static async Task<StorageFile> GetFileFromSourceAsync(object sourceObj)
     {
-        Uri? source = null;
+        Uri source;
 
         if (sourceObj is string sourceStr)
         {
@@ -53,12 +73,10 @@ public partial class MediaBackgroundPanel : ContentControl
             }
             catch (UriFormatException)
             {
-                var localFolderPath = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
-                var path = Path.GetFullPath(Path.Combine(localFolderPath, sourceStr));
-
                 try
                 {
-                    source = new Uri(path);
+                    var executingLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    source = new Uri(Path.Combine(executingLocation!, sourceStr.GetPathChunk()));
                 }
                 catch (UriFormatException)
                 {
@@ -71,26 +89,18 @@ public partial class MediaBackgroundPanel : ContentControl
             // Load storage file from the uri
             source = sourceUri;
         }
-
-        return source;
-    }
-
-    private void SourceChangedAsync(object? source)
-    {
-        if (source != null)
+        else
         {
-            var uri = GetFileFromSource(source);
-            var contentType = MimeUtility.GetMimeMapping(uri?.LocalPath).Split('/')[0];
-            MediaBackgroundType fileType;
+            throw new InvalidDataException("The source must be a string or a uri.");
+        }
 
-            if (uri != null && contentType != null && contentType.TryToEnum(out fileType))
-            {
-                // Change the background data
-                BackgroundType = fileType;
-                SourceUri = uri;
-            }
-
-            ChangeBackgroundContent();
+        if (source.Scheme != "file")
+        {
+            return await StorageFile.GetFileFromApplicationUriAsync(source);
+        }
+        else
+        {
+            return await StorageFile.GetFileFromPathAsync(source.LocalPath);
         }
     }
 
@@ -102,7 +112,10 @@ public partial class MediaBackgroundPanel : ContentControl
             if (ImageTemplate.LoadContent() is Image image)
             {
                 image.Name = ImagePresenter;
-                image.Source = new BitmapImage(SourceUri);
+                if (SourceFile != null)
+                {
+                    image.Source = new BitmapImage(new Uri(SourceFile.Path));
+                }
 
                 _imagePresenter = image;
             }
@@ -135,7 +148,7 @@ public partial class MediaBackgroundPanel : ContentControl
             if (MediaPlayerTemplate.LoadContent() is MediaPlayerElement mediaPlayer)
             {
                 mediaPlayer.Name = VideoPresenter;
-                mediaPlayer.Source = MediaSource.CreateFromUri(SourceUri);
+                mediaPlayer.Source = MediaSource.CreateFromStorageFile(SourceFile);
                 mediaPlayer.MediaPlayer.IsLoopingEnabled = true;
 
                 _videoPresenter = mediaPlayer;
@@ -156,7 +169,7 @@ public partial class MediaBackgroundPanel : ContentControl
         var mediaPlayer = new MediaPlayerElement()
         {
             Name = VideoPresenter,
-            Source = MediaSource.CreateFromUri(SourceUri),
+            Source = MediaSource.CreateFromStorageFile(SourceFile),
             MediaPlayer = { IsLoopingEnabled = true }
         };
 
@@ -175,7 +188,10 @@ public partial class MediaBackgroundPanel : ContentControl
         {
             // Load the image presenter as the background content if the background type is a image
             _imagePresenter ??= CreateImagePresenter();
-            _imagePresenter.Source = new BitmapImage(SourceUri);
+            if (SourceFile != null)
+            {
+                _imagePresenter.Source = new BitmapImage(new Uri(SourceFile.Path));
+            }
 
             BackgroundContent = _imagePresenter;
         }
@@ -188,7 +204,7 @@ public partial class MediaBackgroundPanel : ContentControl
             }
             else
             {
-                _videoPresenter.MediaPlayer.Source = MediaSource.CreateFromUri(SourceUri);
+                _videoPresenter.MediaPlayer.Source = MediaSource.CreateFromStorageFile(SourceFile);
             }
 
             BackgroundContent = _videoPresenter;
