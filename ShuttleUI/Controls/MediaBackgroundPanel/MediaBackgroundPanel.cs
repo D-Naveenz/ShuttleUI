@@ -1,4 +1,5 @@
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Automation.Peers;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using MimeMapping;
@@ -197,5 +198,34 @@ public partial class MediaBackgroundPanel : ContentControl
         {
             throw new InvalidOperationException("The template of the MediaBackgroundPanel must contain a ContentPresenter with the name PART_BackgroundPresenter.");
         }
+    }
+
+    //private void UpdateVisualState()
+    //{
+
+    //    if (BackgroundType == MediaBackgroundType.Image)
+    //    {
+
+    //        VisualStateManager.GoToState(this, ImageBackgroundState, true);
+    //    }
+    //    else if (BackgroundType == MediaBackgroundType.Video)
+    //    {
+
+    //        VisualStateManager.GoToState(this, MediaBackgroundState, true);
+    //    }
+    //    else
+    //    {
+
+    //        VisualStateManager.GoToState(this, NormalState, true);
+    //    }
+    //}
+
+    /// <summary>
+    /// Creates AutomationPeer
+    /// </summary>
+    /// <returns>An automation peer for <see cref="MediaBackgroundPanel"/>.</returns>
+    protected override AutomationPeer OnCreateAutomationPeer()
+    {
+        return new MediaBackgroundPanelAutomationPeer(this);
     }
 }
