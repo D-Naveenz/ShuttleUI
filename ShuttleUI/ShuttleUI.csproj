@@ -15,7 +15,8 @@
 	<Description>Offers advanced UI controls and addresses limitations present in some XAML elements provided by WinUI. Additionally, it includes enhancements for the WinUI template provided by TemplateStudio.</Description>
 	<Version>0.3.9</Version>
 	<Copyright>(c) 2024 Naveen Dharmathunga, All rights reserved.</Copyright>
-	<PackageTags>WindowsAppSDK; WinUI; XAML; Controls; Behaviors; Helpers; Extensions; UI Library</PackageTags>
+	<PackageTags>WindowsAppSDK; WinUI; XAML; Controls; Behaviors; Helpers; Extensions; UI</PackageTags>
+	<PackageIcon>icon_full.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -30,6 +31,10 @@
 	  <PackagePath>\</PackagePath>
 	</None>
 	<None Include="..\LICENSE.md">
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+	</None>
+	<None Include="Assets\Icon\icon_full.png">
 	  <Pack>True</Pack>
 	  <PackagePath>\</PackagePath>
 	</None>
