@@ -9,6 +9,9 @@ public class LayoutBehavior : Behavior<Frame>
 {
     private static LayoutBehavior? _instance;
 
+    /// <summary>
+    /// Gets or sets the default <see cref="Thickness"/> for spacing.
+    /// </summary>
     public Thickness DefaultThickness
     {
         get => (Thickness)GetValue(DefaultThicknessProperty);
@@ -18,17 +21,30 @@ public class LayoutBehavior : Behavior<Frame>
     public static readonly DependencyProperty DefaultThicknessProperty =
         DependencyProperty.Register("DefaultThickness", typeof(Thickness), typeof(LayoutBehavior), new PropertyMetadata(null));
 
-    public FrameThicknessType DefaultThicknessType
+    /// <summary>
+    /// Gets or sets the default thickness type. This is a <see cref="LayoutThicknessType"/> and <c>Margin</c> is the default value
+    /// </summary>
+    public LayoutThicknessType DefaultThicknessType
     {
-        get => (FrameThicknessType)GetValue(DefaultThicknessTypeProperty);
+        get => (LayoutThicknessType)GetValue(DefaultThicknessTypeProperty);
         set => SetValue(DefaultThicknessTypeProperty, value);
     }
 
     public static readonly DependencyProperty DefaultThicknessTypeProperty =
-        DependencyProperty.Register("DefaultThicknessType", typeof(FrameThicknessType), typeof(LayoutBehavior), new PropertyMetadata(FrameThicknessType.Margin));
+        DependencyProperty.Register("DefaultThicknessType", typeof(LayoutThicknessType), typeof(LayoutBehavior), new PropertyMetadata(LayoutThicknessType.Margin));
 
+    /// <summary>
+    /// Getter of the <see cref="ThicknessProperty"/>. This is a <see cref="Thickness"/>
+    /// </summary>
+    /// <param name="element">Attached element of the property</param>
+    /// <returns></returns>
     public static Thickness? GetThickness(FrameworkElement element) => (Thickness?)element.GetValue(ThicknessProperty);
 
+    /// <summary>
+    /// Setter of the <see cref="ThicknessProperty"/>. This is a <see cref="LayoutThicknessType"/>
+    /// </summary>
+    /// <param name="element">Attached element of the property</param>
+    /// <param name="value">Thickness value</param>
     public static void SetThickness(FrameworkElement element, Thickness? value) => element.SetValue(ThicknessProperty, value);
 
     public static readonly DependencyProperty ThicknessProperty =
@@ -38,14 +54,24 @@ public class LayoutBehavior : Behavior<Frame>
             typeof(LayoutBehavior),
             new PropertyMetadata(null, OnUpdateThickness));
 
-    public static FrameThicknessType? GetThicknessType(FrameworkElement element) => (FrameThicknessType?)element.GetValue(ThicknessTypeProperty);
+    /// <summary>
+    /// Getter of the <see cref="ThicknessTypeProperty"/>. This is a <see cref="LayoutThicknessType"/> and <c>Margin</c> is the default value
+    /// </summary>
+    /// <param name="element">Attached element of the property</param>
+    /// <returns></returns>
+    public static LayoutThicknessType? GetThicknessType(FrameworkElement element) => (LayoutThicknessType?)element.GetValue(ThicknessTypeProperty);
 
-    public static void SetThicknessType(FrameworkElement element, FrameThicknessType? value) => element.SetValue(ThicknessTypeProperty, value);
+    /// <summary>
+    /// Setter of the <see cref="ThicknessTypeProperty"/>. This is a <see cref="LayoutThicknessType"/>
+    /// </summary>
+    /// <param name="element">Attached element of the property</param>
+    /// <param name="value">Thickness Type. It can be a <c>Margin</c>, <c>Padding</c> or set it to <c>None</c> to disable spacing.</param>
+    public static void SetThicknessType(FrameworkElement element, LayoutThicknessType? value) => element.SetValue(ThicknessTypeProperty, value);
 
     public static readonly DependencyProperty ThicknessTypeProperty =
         DependencyProperty.RegisterAttached(
             "ThicknessType",
-            typeof(FrameThicknessType?),
+            typeof(LayoutThicknessType?),
             typeof(LayoutBehavior),
             new PropertyMetadata(null, OnUpdateThicknessType));
 
@@ -130,14 +156,14 @@ public class LayoutBehavior : Behavior<Frame>
         // Reset frame margin
         AssociatedObject.Margin = new(0);
 
-        if (thicknessType == FrameThicknessType.None)
+        if (thicknessType == LayoutThicknessType.None)
         {
             if (element != null)
             {
                 SetPadding(element, new(0));
             }
         }
-        else if (thicknessType == FrameThicknessType.Margin)
+        else if (thicknessType == LayoutThicknessType.Margin)
         {
             // Change the margin of the frame(Page)
             AssociatedObject.Margin = (Thickness)thickness;
@@ -165,7 +191,7 @@ public class LayoutBehavior : Behavior<Frame>
     }
 }
 
-public enum FrameThicknessType
+public enum LayoutThicknessType
 {
     None,
     Margin,

@@ -1,7 +1,5 @@
 # ShuttleUI
 
-**Current Stage:** Work in Progress (WIP)/Pre-release
-
 Shuttle UI is a library designed to accelerate the development process of WinUI 3 applications. It offers advanced UI controls and addresses limitations present in some XAML elements provided by WinUI. Additionally, it includes enhancements for the WinUI template provided by TemplateStudio.
 
 ### Components
@@ -16,6 +14,8 @@ Shuttle UI is a library designed to accelerate the development process of WinUI 
 
 ### How to Use
 Shuttle UI is developed using the latest WindowsAppSDK (1.5.240404000) and DotNet 8.0. While it is optimized for use with the TemplateStudio template, this is not a strict requirement.
+
+See the [Documentation](https://github.com/D-Naveenz/ShuttleUI/wiki)
 
 ### License
 Shuttle UI is released under the MIT License. For more details, see the [LICENSE.md](LICENSE.md) file included in the package.

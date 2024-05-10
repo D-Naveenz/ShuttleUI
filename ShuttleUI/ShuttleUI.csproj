@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	<TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
-	<SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+	<SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
 	<RootNamespace>ShuttleUI</RootNamespace>
 	<RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
 	<UseWinUI>true</UseWinUI>
@@ -13,7 +13,7 @@
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<RepositoryUrl>https://github.com/D-Naveenz/ShuttleUI</RepositoryUrl>
 	<Description>Offers advanced UI controls and addresses limitations present in some XAML elements provided by WinUI. Additionally, it includes enhancements for the WinUI template provided by TemplateStudio.</Description>
-	<Version>0.3.9</Version>
+	<Version>0.4.0</Version>
 	<Copyright>(c) 2024 Naveen Dharmathunga, All rights reserved.</Copyright>
 	<PackageTags>WindowsAppSDK; WinUI; XAML; Controls; Behaviors; Helpers; Extensions; UI</PackageTags>
 	<PackageIcon>icon_full.png</PackageIcon>
@@ -55,5 +55,11 @@
 	  <Page Update="Themes\SettingsCard.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 	  </Page>
+  </ItemGroup>
+	
+  <ItemGroup>
+	<Page Update="Styles\Forms.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
   </ItemGroup>
 </Project>

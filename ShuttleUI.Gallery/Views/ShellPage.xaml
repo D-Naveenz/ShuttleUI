@@ -88,9 +88,7 @@
             <Grid x:Name="NavFrameContainer">
                 <Frame x:Name="NavigationFrame">
                     <i:Interaction.Behaviors>
-                        <suib:LayoutBehavior
-                        DefaultThicknessType="Margin" 
-                        DefaultThickness="{StaticResource NavigationViewPageContentMargin}" />
+                        <suib:LayoutBehavior DefaultThickness="{StaticResource NavigationViewPageContentMargin}" />
                     </i:Interaction.Behaviors>
                 </Frame>
             </Grid>

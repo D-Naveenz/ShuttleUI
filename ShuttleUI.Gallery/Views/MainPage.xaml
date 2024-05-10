@@ -8,6 +8,7 @@
     xmlns:suic="using:ShuttleUI.Controls"
     xmlns:suib="using:ShuttleUI.Behaviors"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+    suib:LayoutBehavior.Thickness="{StaticResource NavigationViewPageContentMargin}"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
