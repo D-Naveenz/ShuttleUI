@@ -30,7 +30,7 @@
                                 viverra tempus taciti varius, euismod inceptos consequat aliquet neque lobortis risus diam volutpat dignissim arcu tempor.
                             </suic:SettingsCard.Description>
 
-                            <StackPanel Style="{StaticResource FormStyle}">
+                            <StackPanel Style="{StaticResource FormStyle}" Width="400">
 
                                 <TextBox x:Name="ArtifactoryURL" Header="Base URL" />
 
