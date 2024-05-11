@@ -74,31 +74,19 @@ public partial class MediaBackgroundPanel : ContentControl
             typeof(MediaBackgroundPanel), 
             new PropertyMetadata(MediaBackgroundType.Unknown));
 
-    /// <summary>
-    /// Gets oe sets the element of the background described in  <see cref="MediaBackgroundType"/>.
-    /// </summary>
-    public Uri? BackgroundContent
-    {
-        get => (Uri?)GetValue(BackgroundContentProperty);
-        set => SetValue(BackgroundContentProperty, value);
-    }
-
-    // Using a DependencyProperty as the backing store for BackgroundContent.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty BackgroundContentProperty =
-        DependencyProperty.Register("BackgroundContent", typeof(Uri), typeof(MediaBackgroundPanel), new PropertyMetadata(null));
 
     /// <summary>
-    /// Gets or sets the <see cref="DataTemplateSelector"/> for the background.
+    /// Gets or sets the Looping property of the video player. Default is <c>true</c>
     /// </summary>
-    public BackgroundTemplateSelector? BackgroundSelector
+    public bool IsVideoLoopingEnabled
     {
-        get => (BackgroundTemplateSelector)GetValue(BackgroundSelectorProperty);
-        set => SetValue(BackgroundSelectorProperty, value);
+        get => (bool)GetValue(IsVideoLoopingEnabledProperty);
+        set => SetValue(IsVideoLoopingEnabledProperty, value);
     }
 
-    // Using a DependencyProperty as the backing store for BackgroundSelector.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty BackgroundSelectorProperty =
-        DependencyProperty.Register("BackgroundSelector", typeof(DataTemplateSelector), typeof(MediaBackgroundPanel), new PropertyMetadata(null));
+    // Using a DependencyProperty as the backing store for IsVideoLoopingEnabled.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty IsVideoLoopingEnabledProperty =
+        DependencyProperty.Register("IsVideoLoopingEnabled", typeof(bool), typeof(MediaBackgroundPanel), new PropertyMetadata(true));
 
     /// <summary>
     /// Gets the <see cref="StorageFile"/> of the source, if the source is recognized as the current background.
@@ -120,12 +108,7 @@ public partial class MediaBackgroundPanel : ContentControl
     private static void OnImageTemplatePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is MediaBackgroundPanel backgroundPanel && backgroundPanel.BackgroundType == MediaBackgroundType.Image)
-        {
-            if (backgroundPanel.BackgroundSelector != null)
-            {
-                backgroundPanel.BackgroundSelector.ImageTemplate = (DataTemplate)e.NewValue;
-            }
-            
+        {          
             // Resets the background with the new DataTemplate
             backgroundPanel.ChangeBackgroundContent();
         }
@@ -135,11 +118,6 @@ public partial class MediaBackgroundPanel : ContentControl
     {
         if (d is MediaBackgroundPanel backgroundPanel && backgroundPanel.BackgroundType == MediaBackgroundType.Video)
         {
-            if (backgroundPanel.BackgroundSelector != null)
-            {
-                backgroundPanel.BackgroundSelector.MediaPlayerTemplate = (DataTemplate)e.NewValue;
-            }
-
             // Resets the background with the new DataTemplate
             backgroundPanel.ChangeBackgroundContent();
         }

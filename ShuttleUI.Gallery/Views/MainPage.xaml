@@ -1,4 +1,4 @@
-﻿<Page
+<Page
     x:Class="ShuttleUI.Gallery.Views.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -13,7 +13,7 @@
 
     <Grid x:Name="ContentArea">
         <suic:MediaBackgroundPanel x:Name="MediaBackgroundPanel" 
-                                   Source="/Assets/videos/sample_video.mp4" 
+                                   Source="{x:Bind ViewModel.BackgroundSource}" 
                                    CornerRadius="8,0,0,0"
                                    suib:LayoutBehavior.ThicknessType="Padding">
             <StackPanel>

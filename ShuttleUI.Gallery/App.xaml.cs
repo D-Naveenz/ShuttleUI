@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 
@@ -105,6 +106,12 @@ public partial class App : Application
     {
         // TODO: Log and handle exceptions as appropriate.
         // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
+
+        if (e.Exception != null)
+        {
+            Debug.WriteLine(e.Exception.Message);
+            // GetService<IAppNotificationService>().Show(e.Exception.Message);
+        }
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)

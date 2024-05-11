@@ -2,16 +2,27 @@ using System.Reflection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Automation.Peers;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
 using ShuttleUI.Helpers;
+using Windows.Media.Core;
 using Windows.Storage;
 
 namespace ShuttleUI.Controls;
 
-[TemplatePart(Name = BackgroundHolder, Type = typeof(ContentPresenter))]
+[TemplatePart(Name = BackgroundHolder, Type = typeof(Grid))]
 [TemplatePart(Name = ImagePresenter, Type = typeof(Image))]
 [TemplatePart(Name = VideoPresenter, Type = typeof(MediaPlayerElement))]
+[TemplateVisualState(Name = NoBackgroundState, GroupName = BackgroundStatesGroup)]
+[TemplateVisualState(Name = ImageState, GroupName = BackgroundStatesGroup)]
+[TemplateVisualState(Name = VideoState, GroupName = BackgroundStatesGroup)]
 public partial class MediaBackgroundPanel : ContentControl
 {
+    protected const string BackgroundStatesGroup = "BackgroundStates";
+
+    protected const string NoBackgroundState = "NoBackgroundState";
+    protected const string ImageState = "ImageState";
+    protected const string VideoState = "VideoState";
+
     protected const string BackgroundHolder = "PART_BackgroundHolder";
     protected const string ImagePresenter = "PART_ImagePresenter";
     protected const string VideoPresenter = "PART_VideoPresenter";
@@ -35,21 +46,14 @@ public partial class MediaBackgroundPanel : ContentControl
                 BackgroundType = fileType;
                 SourceFile = file;
             }
-
-            ChangeBackgroundContent();
         }
-    }
-
-    protected override void OnApplyTemplate()
-    {
-        base.OnApplyTemplate();
-
-        BackgroundSelector = new BackgroundTemplateSelector
+        else
         {
-            ImageTemplate = ImageTemplate,
-            MediaPlayerTemplate = MediaPlayerTemplate,
-            GetBackgroundType = () => BackgroundType
-        };
+            BackgroundType = MediaBackgroundType.Unknown;
+            SourceFile = null;
+        }
+
+        ChangeBackgroundContent();
     }
 
     protected static async Task<StorageFile> GetFileFromSourceAsync(object sourceObj)
@@ -107,17 +111,48 @@ public partial class MediaBackgroundPanel : ContentControl
 
     private void ChangeBackgroundContent()
     {
-        if (Source == null)
+        if (BackgroundType == MediaBackgroundType.Unknown)
         {
-            BackgroundContent = null;
             return;
         }
 
-        if (BackgroundType == MediaBackgroundType.Unknown)
-        {
-            throw new InvalidOperationException("Source must be either image or video");
-        }
+        var _backgroundContent = new Uri(SourceFile!.Path);
+        var imagePresenter = GetTemplateChild(ImagePresenter) as Image;
+        var videoPresenter = GetTemplateChild(VideoPresenter) as MediaPlayerElement;
 
-        BackgroundContent = new Uri(SourceFile!.Path);
+        // Reset source of the background presenters
+        imagePresenter!.Source = null;
+        videoPresenter!.Source = null;
+
+        // Update the visual states
+        UpdateVisualStates();
+
+        // Set the source of the background presenters
+        if (BackgroundType == MediaBackgroundType.Image)
+        {
+            imagePresenter!.Source = new BitmapImage(_backgroundContent);
+        }
+        else if (BackgroundType == MediaBackgroundType.Video)
+        {
+            videoPresenter!.Source = MediaSource.CreateFromUri(_backgroundContent);
+            videoPresenter.MediaPlayer.IsLoopingEnabled = IsVideoLoopingEnabled;
+            videoPresenter.MediaPlayer.Play();
+        }
+    }
+
+    private void UpdateVisualStates()
+    {
+        if (BackgroundType == MediaBackgroundType.Image)
+        {
+            VisualStateManager.GoToState(this, ImageState, true);
+        }
+        else if (BackgroundType == MediaBackgroundType.Video)
+        {
+            VisualStateManager.GoToState(this, VideoState, true);
+        }
+        else
+        {
+            VisualStateManager.GoToState(this, NoBackgroundState, true);
+        }
     }
 }

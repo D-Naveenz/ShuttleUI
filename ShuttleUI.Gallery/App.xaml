@@ -11,7 +11,7 @@
                 <ResourceDictionary Source="/Styles/TextBlock.xaml" />
                 <ResourceDictionary Source="/Styles/Headers.xaml" />
 
-                <ResourceDictionary Source="ms-appx:///ShuttleUI/Styles/Forms.xaml" />
+                <ResourceDictionary Source="ShuttleUI/Styles/Forms.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
