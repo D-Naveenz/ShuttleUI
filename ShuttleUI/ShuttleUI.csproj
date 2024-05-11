@@ -17,6 +17,10 @@
 	<Copyright>(c) 2024 Naveen Dharmathunga, All rights reserved.</Copyright>
 	<PackageTags>WindowsAppSDK; WinUI; XAML; Controls; Behaviors; Helpers; Extensions; UI</PackageTags>
 	<PackageIcon>icon_full.png</PackageIcon>
+	<PackageReleaseNotes>Updated package details and the documentation
+Fixed MadiaBackgroundPanel Background Source binding error
+Added Form styles
+Various performance optimizations</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
