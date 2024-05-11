@@ -29,7 +29,7 @@ public partial class MediaBackgroundPanel : ContentControl
             var contentType = file.ContentType.Split('/')[0];
 
             MediaBackgroundType fileType;
-            if (file != null && contentType != null && contentType.TryToEnum(out fileType))
+            if (contentType != null && contentType.TryToEnum(out fileType))
             {
                 // Change the background data
                 BackgroundType = fileType;
@@ -48,7 +48,7 @@ public partial class MediaBackgroundPanel : ContentControl
         {
             ImageTemplate = ImageTemplate,
             MediaPlayerTemplate = MediaPlayerTemplate,
-            BackgroundType = BackgroundType
+            GetBackgroundType = () => BackgroundType
         };
     }
 
@@ -119,11 +119,5 @@ public partial class MediaBackgroundPanel : ContentControl
         }
 
         BackgroundContent = new Uri(SourceFile!.Path);
-
-        if (BackgroundType == MediaBackgroundType.Video)
-        {
-            var videoPresenter = (MediaPlayerElement)GetTemplateChild(VideoPresenter);
-            videoPresenter.MediaPlayer.Play();
-        }
     }
 }

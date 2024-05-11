@@ -72,7 +72,7 @@ public partial class MediaBackgroundPanel : ContentControl
             "BackgroundType", 
             typeof(MediaBackgroundType), 
             typeof(MediaBackgroundPanel), 
-            new PropertyMetadata(MediaBackgroundType.Unknown, OnBackgroundTypeChanged));
+            new PropertyMetadata(MediaBackgroundType.Unknown));
 
     /// <summary>
     /// Gets oe sets the element of the background described in  <see cref="MediaBackgroundType"/>.
@@ -142,17 +142,6 @@ public partial class MediaBackgroundPanel : ContentControl
 
             // Resets the background with the new DataTemplate
             backgroundPanel.ChangeBackgroundContent();
-        }
-    }
-
-    private static void OnBackgroundTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is MediaBackgroundPanel backgroundPanel)
-        {
-            if (backgroundPanel.BackgroundSelector != null)
-            {
-                backgroundPanel.BackgroundSelector.BackgroundType = (MediaBackgroundType)e.NewValue;
-            }
         }
     }
 }

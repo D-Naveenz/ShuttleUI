@@ -1,7 +1,9 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:ShuttleUI.Controls">
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:controls="using:ShuttleUI.Controls"
+    xmlns:behaviors="using:ShuttleUI.Behaviors">
 
     <DataTemplate x:Key="MBPDefaultImagePresenter">
         <Image x:Name="PART_ImagePresenter"
@@ -17,9 +19,11 @@
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             IsTabStop="False"
-                            Source="{Binding}"
-                            AutoPlay="True"
-                            Stretch="UniformToFill"/>
+                            Stretch="UniformToFill">
+            <i:Interaction.Behaviors>
+                <behaviors:MediaPlaybackBehavior Source="{Binding}" Repeat="True" />
+            </i:Interaction.Behaviors>
+        </MediaPlayerElement>
     </DataTemplate>
 
     <x:Double x:Key="MediaBackgroundPanelMinWidth">280</x:Double>

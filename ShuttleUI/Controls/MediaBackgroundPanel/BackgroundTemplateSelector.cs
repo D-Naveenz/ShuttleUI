@@ -15,20 +15,22 @@ public class BackgroundTemplateSelector : DataTemplateSelector
         get; set;
     }
 
-    public MediaBackgroundType BackgroundType
+    public BackgroundTypeCallback? GetBackgroundType
     {
         get; set;
-    } = MediaBackgroundType.Unknown;
+    }
 
     protected override DataTemplate? SelectTemplateCore(object item, DependencyObject container)
     {
-        if (item is string && container is ContentPresenter contentPresenter)
+        if (item is string && container is ContentPresenter contentPresenter && GetBackgroundType != null)
         {
-            if (BackgroundType == MediaBackgroundType.Image && ImageTemplate != null)
+            var _backgroundType = GetBackgroundType();
+
+            if (_backgroundType == MediaBackgroundType.Image && ImageTemplate != null)
             {
                 return ImageTemplate;
             }
-            else if (BackgroundType == MediaBackgroundType.Video && MediaPlayerTemplate != null)
+            else if (_backgroundType == MediaBackgroundType.Video && MediaPlayerTemplate != null)
             {
                 return MediaPlayerTemplate;
             }
@@ -42,3 +44,5 @@ public class BackgroundTemplateSelector : DataTemplateSelector
         return base.SelectTemplateCore(item, container);
     }
 }
+
+public delegate MediaBackgroundType BackgroundTypeCallback();
