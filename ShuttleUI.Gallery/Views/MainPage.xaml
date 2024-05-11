@@ -1,4 +1,4 @@
-﻿<Page
+<Page
     x:Class="ShuttleUI.Gallery.Views.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,12 +8,13 @@
     xmlns:suic="using:ShuttleUI.Controls"
     xmlns:suib="using:ShuttleUI.Behaviors"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+    suib:LayoutBehavior.Thickness="{StaticResource NavigationViewPageContentMargin}"
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
         <suic:MediaBackgroundPanel x:Name="MediaBackgroundPanel" 
-                                   Source="ms-appx:///Assets/images/background.jpeg" 
-                                   CornerRadius="5,0,0,0"
+                                   Source="{x:Bind ViewModel.BackgroundSource}" 
+                                   CornerRadius="8,0,0,0"
                                    suib:LayoutBehavior.ThicknessType="Padding">
             <StackPanel>
                 <TextBlock>This is a title</TextBlock>

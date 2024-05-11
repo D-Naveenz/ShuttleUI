@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Windows.Storage;
 
 namespace ShuttleUI.Controls;
 
@@ -20,7 +21,7 @@ public partial class MediaBackgroundPanel : ContentControl
             "ImageTemplate",
             typeof(DataTemplate),
             typeof(MediaBackgroundPanel),
-            new PropertyMetadata(null, (d, e) => ((MediaBackgroundPanel)d).OnImageTemplatePropertyChanged((DataTemplate)e.OldValue, (DataTemplate)e.NewValue)));
+            new PropertyMetadata(null, OnImageTemplatePropertyChanged));
 
     /// <summary>
     /// Gets or sets the <see cref="DataTemplate"/> for the video.
@@ -37,7 +38,7 @@ public partial class MediaBackgroundPanel : ContentControl
             "MediaPlayerTemplate",
             typeof(DataTemplate),
             typeof(MediaBackgroundPanel),
-            new PropertyMetadata(null, (d, e) => ((MediaBackgroundPanel)d).OnMediaPlayerTemplatePropertyChanged((DataTemplate)e.OldValue, (DataTemplate)e.NewValue)));
+            new PropertyMetadata(null, OnMediaPlayerTemplatePropertyChanged));
 
     /// <summary>
     /// Gets or sets the source of the background.
@@ -51,10 +52,10 @@ public partial class MediaBackgroundPanel : ContentControl
     // Using a DependencyProperty as the backing store for Source.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty SourceProperty =
         DependencyProperty.Register(
-            "Source", 
-            typeof(object), 
-            typeof(MediaBackgroundPanel), 
-            new PropertyMetadata(null, (d, e) => ((MediaBackgroundPanel)d).OnSourcePropertyChanged(e.OldValue, e.NewValue)));
+            "Source",
+            typeof(object),
+            typeof(MediaBackgroundPanel),
+            new PropertyMetadata(null, OnSourcePropertyChangedAsync));
 
     /// <summary>
     /// Gets or sets the <see cref="MediaBackgroundType"/> of the selected background source.
@@ -67,47 +68,59 @@ public partial class MediaBackgroundPanel : ContentControl
 
     // Using a DependencyProperty as the backing store for BackgroundType.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty BackgroundTypeProperty =
-        DependencyProperty.Register("BackgroundType", typeof(MediaBackgroundType), typeof(MediaBackgroundPanel), new PropertyMetadata(MediaBackgroundType.Unknown));
-
+        DependencyProperty.Register(
+            "BackgroundType", 
+            typeof(MediaBackgroundType), 
+            typeof(MediaBackgroundPanel), 
+            new PropertyMetadata(MediaBackgroundType.Unknown));
 
 
     /// <summary>
-    /// Gets oe sets the element of the background described in  <see cref="MediaBackgroundType"/>.
+    /// Gets or sets the Looping property of the video player. Default is <c>true</c>
     /// </summary>
-    public FrameworkElement? BackgroundContent
+    public bool IsVideoLoopingEnabled
     {
-        get => (FrameworkElement?)GetValue(BackgroundContentProperty);
-        set => SetValue(BackgroundContentProperty, value);
+        get => (bool)GetValue(IsVideoLoopingEnabledProperty);
+        set => SetValue(IsVideoLoopingEnabledProperty, value);
     }
 
-    // Using a DependencyProperty as the backing store for BackgroundContent.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty BackgroundContentProperty =
-        DependencyProperty.Register("BackgroundContent", typeof(FrameworkElement), typeof(MediaBackgroundPanel), new PropertyMetadata(null));
+    // Using a DependencyProperty as the backing store for IsVideoLoopingEnabled.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty IsVideoLoopingEnabledProperty =
+        DependencyProperty.Register("IsVideoLoopingEnabled", typeof(bool), typeof(MediaBackgroundPanel), new PropertyMetadata(true));
 
     /// <summary>
-    /// Gets the <see cref="Uri"/> of the source, if the source is recognized as the current background.
+    /// Gets the <see cref="StorageFile"/> of the source, if the source is recognized as the current background.
     /// </summary>
-    public Uri? SourceUri
+    public StorageFile? SourceFile
     {
         get;
         private set;
     }
 
-
-    public virtual void OnSourcePropertyChanged(object? oldValue, object? newValue)
+    private static async void OnSourcePropertyChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        var source = Source;
-        SourceChangedAsync(source);
+        if (d is MediaBackgroundPanel backgroundPanel)
+        {
+            await backgroundPanel.SourceChangedAsync(e.NewValue);
+        }
     }
 
-    public virtual void OnImageTemplatePropertyChanged(DataTemplate? oldValue, DataTemplate? newValue)
+    private static void OnImageTemplatePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        ImageTemplateChanged();
+        if (d is MediaBackgroundPanel backgroundPanel && backgroundPanel.BackgroundType == MediaBackgroundType.Image)
+        {          
+            // Resets the background with the new DataTemplate
+            backgroundPanel.ChangeBackgroundContent();
+        }
     }
 
-    public virtual void OnMediaPlayerTemplatePropertyChanged(DataTemplate? oldValue, DataTemplate? newValue)
+    private static void OnMediaPlayerTemplatePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        MediaPlayerTemplateChanged();
+        if (d is MediaBackgroundPanel backgroundPanel && backgroundPanel.BackgroundType == MediaBackgroundType.Video)
+        {
+            // Resets the background with the new DataTemplate
+            backgroundPanel.ChangeBackgroundContent();
+        }
     }
 }
 

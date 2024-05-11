@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:suic="using:ShuttleUI.Controls"
+    xmlns:suih="using:ShuttleUI.Helpers">
+
+    <Style x:Key="HeaderedContentControlStyle" TargetType="controls:HeaderedContentControl">
+        <Setter Property="Margin" Value="0,0,0,20" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="HeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="0,0,0,10" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="suih:StyleExtensions.Resources">
+            <Setter.Value>
+                <ResourceDictionary>
+                    <Style TargetType="suic:SettingsCard">
+                        <Setter Property="Margin" Value="0,0,0,4" />
+                    </Style>
+                </ResourceDictionary>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
